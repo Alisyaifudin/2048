@@ -1,8 +1,6 @@
-import { CELL_SIZE, GRID_SIZE } from "@/lib/constants";
+import { GAP, ROUND_CORNER, TILE_SIZE } from "@/lib/constants";
 import { TileNumber } from "@/lib/types";
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
-
-const padding = 5;
 
 export class TileClass {
 	ref: Container;
@@ -12,8 +10,8 @@ export class TileClass {
 		public y: number,
 	) {
 		const container = new Container({
-			x: x * CELL_SIZE,
-			y: y * CELL_SIZE,
+			x: x * TILE_SIZE + (x + 1) * GAP,
+			y: y * TILE_SIZE + (y + 1) * GAP,
 		});
 		const color = COLORS[number];
 		const style = new TextStyle({
@@ -24,20 +22,17 @@ export class TileClass {
 		});
 		this.ref = container;
 		const graphics = new Graphics()
-			.rect(padding, padding, CELL_SIZE - padding, CELL_SIZE - padding)
+			.roundRect(0, 0, TILE_SIZE, TILE_SIZE, ROUND_CORNER)
 			.fill(color.bg);
 		container.addChild(graphics);
 		const text = new Text({
 			text: number.toString(),
 			style,
-			x: CELL_SIZE / 2,
-			y: CELL_SIZE / 2,
+			x: TILE_SIZE / 2,
+			y: TILE_SIZE / 2,
 			anchor: 0.5,
 		});
 		container.addChild(text);
-	}
-	get index() {
-		return this.x + this.y * GRID_SIZE;
 	}
 }
 

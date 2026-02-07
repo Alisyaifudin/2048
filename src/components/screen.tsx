@@ -1,7 +1,7 @@
 import { extend } from "@pixi/react";
 import { Container, Graphics } from "pixi.js";
 import React, { useEffect, useRef, useState } from "react";
-import { SCREEN_SIZE } from "./lib/constants";
+import { SCREEN_SIZE } from "../lib/constants";
 
 extend({
 	Container,

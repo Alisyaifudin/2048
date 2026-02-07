@@ -1,15 +1,23 @@
 import { Container } from "pixi.js";
 import { TileClass } from "../Tile/class";
-import { CELL_SIZE, GRID_SIZE } from "@/lib/constants";
 import { getRandomPosition } from "./random-position";
+import { GAP, ROUND_CORNER } from "@/lib/constants";
 
-type Status = "over" | "game"
+type Status = "over" | "game";
 
 class BoardClass {
 	score: number = 0;
 	ref!: Container;
 	status: Status = "game";
 	tiles: TileClass[] = [];
+	init() {
+		for (const tile of this.tiles) {
+			this.ref.removeChild(tile.ref);
+		}
+		this.tiles = [];
+		this.status = "game";
+		this.spawnNewTile();
+	}
 	spawnNewTile() {
 		if (this.status !== "game") return;
 		const number = Math.random() > 0.2 ? 2 : 4;
@@ -22,8 +30,6 @@ class BoardClass {
 
 export const board = new BoardClass();
 
-
-
 const COLORS = {
 	bg: "#bbada0",
 	cell: "rgba(238, 228, 218, 0.35)",
@@ -31,10 +37,7 @@ const COLORS = {
 
 export const BOARD_STYLES = {
 	background: COLORS.bg,
-	padding: 8,
-	gap: 8,
+	padding: GAP,
 	cellBackground: COLORS.cell,
-	cornerRadius: 3,
+	cornerRadius: ROUND_CORNER,
 } as const;
-
-export const TOTAL_SIZE = GRID_SIZE * CELL_SIZE + BOARD_STYLES.padding * 2;
