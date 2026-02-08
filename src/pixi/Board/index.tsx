@@ -5,6 +5,7 @@ import { board, BOARD_STYLES } from "./class";
 import { GRID_SIZE, SCREEN_SIZE, TILE_SIZE } from "@/lib/constants";
 import { pointer } from "../pointer";
 import { interaction } from "../interaction";
+import { keyboard } from "../keyboard";
 
 extend({
 	Container,
@@ -34,9 +35,12 @@ export function Board() {
 		pointer.init(container);
 		interaction.init(container);
 		interaction.addListener((dir) => board.move(dir));
+		keyboard.init(container);
+		keyboard.addListener((dir) => board.move(dir));
 		return () => {
 			pointer.cleanup();
 			interaction.cleanup();
+			keyboard.cleanup();
 		};
 	}, [ref]);
 	useTick((ticker) => {

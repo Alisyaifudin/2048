@@ -84,7 +84,8 @@ class BoardClass {
 			tiles[idx].forEach((tile, i) => {
 				if (tile[coord] === edges[direction]) return;
 				const prev = i === 0 ? undefined : tiles[idx][i - 1];
-				hasCombined = moveTile({ direction, allowCombine: !hasCombined, from: tile, to: prev });
+				hasCombined =
+					moveTile({ direction, allowCombine: !hasCombined, from: tile, to: prev }) || hasCombined;
 				if (tile.x !== tile.position.x || tile.y !== tile.position.y) isMoving = true;
 			});
 		}
