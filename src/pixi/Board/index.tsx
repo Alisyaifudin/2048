@@ -3,6 +3,8 @@ import { Graphics, Container } from "pixi.js";
 import { useEffect, useRef } from "react";
 import { board, BOARD_STYLES } from "./class";
 import { GRID_SIZE, SCREEN_SIZE, TILE_SIZE } from "@/lib/constants";
+import { pointer } from "../pointer";
+import { interaction } from "../interaction";
 
 extend({
 	Container,
@@ -25,15 +27,24 @@ for (let row = 0; row < GRID_SIZE; row++) {
 export function Board() {
 	const ref = useRef<Graphics>(null);
 	useEffect(() => {
-		if (ref.current === null) return;
-		board.ref = ref.current;
+		const container = ref.current;
+		if (container === null) return;
+		board.ref = container;
 		board.init();
+		pointer.init(container);
+		interaction.init(container);
+		interaction.addListener((dir) => board.move(dir));
+		return () => {
+			pointer.cleanup();
+			interaction.cleanup();
+		};
 	}, [ref]);
-	useTick(() => {
-		// attach input
+	useTick((ticker) => {
+		board.onAnimate(ticker.deltaTime);
 	});
+
 	return (
-		<pixiContainer ref={ref}>
+		<pixiContainer eventMode="static" ref={ref} width={SCREEN_SIZE} height={SCREEN_SIZE}>
 			<pixiGraphics
 				draw={(g) => {
 					// Main board background with rounded corners

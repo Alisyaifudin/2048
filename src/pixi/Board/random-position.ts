@@ -1,9 +1,9 @@
 import { PointData } from "pixi.js";
-import { TileClass } from "../Tile/class";
+import { TileClass } from "../tile";
 import { GRID_SIZE } from "@/lib/constants";
 
 export function getRandomPosition(tiles: TileClass[]) {
-	let position: PointData;
+	let position: PointData | null = null;
 	let count = 0;
 	for (let x = 0; x < GRID_SIZE; x++) {
 		for (let y = 0; y < GRID_SIZE; y++) {
@@ -14,5 +14,5 @@ export function getRandomPosition(tiles: TileClass[]) {
 			}
 		}
 	}
-	return position!;
+	return position;
 }
